@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="app_name">宝贝树书柜</string>
+    <string name="action_settings">Settings</string>
+    <string name="net_port">9909</string>
+    <string name="net_addr">192.168.1.222</string>
+    <string name="box_number">Box Number：</string>
+    <string name="tv_inventoryInfo">标签:0;循环:0;失败:0</string>
+    <string name="cancel">CANCEL</string>
+    <string name="tx_msg_openDev_ok">Open the device successfully.</string>
+    <string name="tx_msg_openDev_fail">Failed to open the device.</string>
+    <string name="tx_info_tagCnt">Tag:</string>
+    <string name="tx_info_failCnt">; Failed:</string>
+    <string name="tx_info_loopCnt">; Loop:</string>
+    <string name="downloading">Download is in progress</string>
+    <string name="amount">总数AMOUNT：</string>
+    <string name="update_apk">UPDATE APK</string>
+    <string name="save_bookcase_id">保存书柜号</string>
+    <string name="back_to_main">返回主界面</string>
+    <string name="tx_open_door">开门</string>
+    <string name="tx_check_door">查看门状态</string>
+    <string name="open_box_3">开 3 号箱</string>
+    <string name="open_box_4">开 4 号箱</string>
+    <string name="open_box_1">开 1 号箱</string>
+    <string name="open_box_2">开 2 号箱</string>
+    <string name="open_box_5">开 5 号箱</string>
+    <string name="open_box_6">开 6 号箱</string>
+    <string name="open_box_7">开 7 号箱</string>
+    <string name="open_box_8">开 8 号箱</string>
+    <string name="opened">已打开</string>
+    <string name="closed">已关闭</string>
+    <string name="check_box_4">盘点 4 号箱</string>
+    <string name="check_box_3">盘点 3 号箱</string>
+    <string name="check_box_2">盘点 2 号箱</string>
+    <string name="check_box_1">盘点 1 号箱</string>
+    <string name="check_box_8">盘点 8 号箱</string>
+    <string name="check_box_7">盘点 7 号箱</string>
+    <string name="check_box_6">盘点 6 号箱</string>
+    <string name="check_box_5">盘点 5 号箱</string>
+    <string name="unknow_status">未知状态</string>
+    <string name="open_all_box">开所有门</string>
+    <string name="check_bookcase">盘点书柜</string>
+    <string name="start_check">正在盘点...</string>
+    <string name="open_sterilamp">打开消毒灯</string>
+    <string name="close_sterilamp">关闭消毒灯</string>
+    <string name="close_light">关闭照明灯</string>
+    <string name="open_light">打开照明灯</string>
+    <string name="StarUpOpen">软件开启时候默认打开串口</string>
+
+    <string name="editText_hint">打开1号箱请输入：open 1</string>
+    <string name="ws_send">发送</string>
+</resources>

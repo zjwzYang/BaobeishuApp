@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<resources>
+    <string name="app_name">MicroBookCase</string>
+    <string name="action_settings">Settings</string>
+    <string name="net_port">9909</string>
+    <string name="net_addr">192.168.1.222</string>
+    <string name="box_number">Box Number：</string>
+    <string name="tv_inventoryInfo">Tag:0;Loop:0;Fail:0</string>
+    <string name="cancel">CANCEL</string>
+    <string name="tx_msg_openDev_ok">Open the device successfully.</string>
+    <string name="tx_msg_openDev_fail">Failed to open the device.</string>
+    <string name="tx_info_tagCnt">Tag:</string>
+    <string name="tx_info_failCnt">; Failed:</string>
+    <string name="tx_info_loopCnt">; Loop:</string>
+    <string name="downloading">Download is in progress</string>
+    <string name="amount">Total 
+AMOUNT：</string>
+    <string name="update_apk">UPDATE APK</string>
+    <string name="save_bookcase_id">Save Bookcase No</string>
+    <string name="back_to_main">Back to home</string>
+    <string name="tx_open_door">Open Door</string>
+    <string name="tx_check_door">Check Door Status</string>
+    <string name="open_box_3">Open NO.3 case </string>
+    <string name="open_box_4">Open No.4 case</string>
+    <string name="open_box_1">Open No.1 case</string>
+    <string name="open_box_2">Open No.2 case</string>
+    <string name="open_box_5">Open No.5 case</string>
+    <string name="open_box_6">Open No.6 case</string>
+    <string name="open_box_7">Open No.7 case</string>
+    <string name="open_box_8">Open No.8 case</string>
+    <string name="opened">Opened</string>
+    <string name="closed">Closed</string>
+    <string name="check_box_4">Inventory 4 case</string>
+    <string name="check_box_3">Inventory 3 case</string>
+    <string name="check_box_2">Inventory 2 case</string>
+    <string name="check_box_1">Inventory 1 case</string>
+    <string name="check_box_8">Inventory 8 case</string>
+    <string name="check_box_7">Inventory 7 case</string>
+    <string name="check_box_6">Inventory 6 case</string>
+    <string name="check_box_5">Inventory 5 case</string>
+    <string name="unknow_status">Unknown state</string>
+    <string name="open_all_box">Open All Door</string>
+    <string name="check_bookcase">Inventory Bookcase</string>
+    <string name="start_check">Inventorying...</string>
+    <string name="open_sterilamp">Open Disinfection Lamp</string>
+    <string name="close_sterilamp">Close Disinfection Lamp</string>
+    <string name="close_light">Open Floodlight</string>
+    <string name="open_light">Close Floodlight</string>
+    <string name="StarUpOpen">StartUp App Open Serial-port</string>
+
+    <string name="editText_hint">打开1号门请输入：open 1</string>
+    <string name="ws_send">发送</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:visibility="visible"
+    android:background="#ffffff">
+
+    <ImageView
+        android:id="@+id/dialog_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="10pt"
+        android:maxWidth="280pt"
+        android:maxHeight="280pt"
+        android:layout_gravity="center_horizontal"
+        android:foregroundGravity="center_horizontal" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:foregroundGravity="center_horizontal"
+        android:paddingBottom="30dp"
+        android:layout_weight="2"
+        android:textColor="#666666"
+        android:id="@+id/qrcode_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:text="微信扫码借还书" />
+
+</LinearLayout>

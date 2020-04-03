@@ -1,0 +1,11 @@
+<resources>
+
+    <string-array name="commType">
+        <item>Bluetooth</item>
+        <item>COM</item>
+        <item>NET</item>
+        <item>USB</item>
+        <item>USB Serial Converter</item>
+    </string-array>
+
+</resources>

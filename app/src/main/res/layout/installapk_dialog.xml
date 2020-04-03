@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#666666"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="@string/downloading"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_progress_show"/>
+    <ProgressBar
+	    android:textColor="#FFFFFF"
+        android:layout_weight="1"
+        android:id="@+id/pb_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0" />
+	<Button
+	    android:background="#22222222"
+	    android:textColor="#111111"
+        android:layout_weight="5"
+	    android:id="@+id/btn_cancel_install"
+	    android:text="@string/cancel" 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"/>
+
+</LinearLayout>
