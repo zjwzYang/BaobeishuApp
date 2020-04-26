@@ -6,25 +6,19 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.andea.lockuntils.LockUtils;
 import com.andea.microbook.R;
-import com.microbookcase.service.NoticeUtil;
 import com.microbookcase.service.WebSocketService;
+import com.microbookcase.service.WebSocketUtil;
 import com.microbookcase.utils.MyImageView;
 import com.microbookcase.utils.Utils;
 
@@ -32,7 +26,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.text.SimpleDateFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -174,8 +167,8 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     public void onGetMessage(String message) {
         if ("open_redy".equals(message)) {
             long timestamp = System.currentTimeMillis();
-            String url = "http://www.fayshine.cn/device/bind/?device=device2&timestamp=" + timestamp
-                    + "&token=" + Utils.md5("device=device2&timestamp=" + timestamp);
+            String url = "http://" + WebSocketUtil.IP + "/device/bind/?device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp
+                    + "&token=" + Utils.md5("device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp);
             showDialog(url);
         }
     }
