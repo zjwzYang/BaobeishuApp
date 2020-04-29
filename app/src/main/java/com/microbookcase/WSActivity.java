@@ -69,8 +69,15 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
         mBackV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                finish();
-                EventBus.getDefault().post("reconnect");
+                finish();
+//                EventBus.getDefault().post("reconnect");
+            }
+        });
+        findViewById(R.id.ws_code_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent codeintent = new Intent(WSActivity.this, CodeListActivity.class);
+                startActivity(codeintent);
             }
         });
     }
@@ -170,6 +177,13 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
             String url = "http://" + WebSocketUtil.IP + "/device/bind/?device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp
                     + "&token=" + Utils.md5("device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp);
             showDialog(url);
+        } else if ("jump_code".equals(message)) {
+            Intent intent = new Intent(this, CodeListActivity.class);
+            startActivity(intent);
+        } else if ("handle_err_books".equals(message)) {
+            Intent intent = new Intent(this, CodeListActivity.class);
+            intent.putExtra("open_type", 1);
+            startActivity(intent);
         }
     }
 

@@ -68,6 +68,10 @@
                     android:resource="@xml/usb_device_filter" />
             -->
         </activity>
+
+        <activity
+            android:name="com.microbookcase.CodeListActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"></activity>
         <!-- 
         <service
             android:name="com.zhilai.terminal.driver.CoreService"

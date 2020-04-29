@@ -1,10 +1,7 @@
 package com.microbookcase.service;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
+import android.text.TextUtils;
 
 public class WebSocketMessageBean {
     private String message;
@@ -12,6 +9,7 @@ public class WebSocketMessageBean {
     private String action;
     private Integer boxId;
     private String[] data;
+    private String barcodeList;
     private String status;
 
     public WebSocketMessageBean() {
@@ -59,6 +57,14 @@ public class WebSocketMessageBean {
         this.data = data;
     }
 
+    public String getBarcodeList() {
+        return barcodeList;
+    }
+
+    public void setBarcodeList(String barcodeList) {
+        this.barcodeList = barcodeList;
+    }
+
     public String getStatus() {
         return this.status;
     }
@@ -104,6 +110,9 @@ public class WebSocketMessageBean {
                 }
             }
             sb.append("],");
+        }
+        if (!TextUtils.isEmpty(barcodeList)) {
+            sb.append(barcodeList);
         }
 
         return sb.substring(0, sb.length() - 1) + "}";

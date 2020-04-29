@@ -1,9 +1,10 @@
 package com.microbookcase.service;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.andea.lockuntils.LockUtils;
@@ -154,6 +155,10 @@ public class MyWebSocket implements Runnable {
         return this.webSocketConnection.isConnected();
     }
 
+    public void sendMessage(WebSocketMessageBean bean) {
+        this.webSocketConnection.sendTextMessage(bean.toString());
+    }
+
     public LockUtils getLockUtils() {
         return this.mLockUtils;
     }
@@ -237,6 +242,7 @@ public class MyWebSocket implements Runnable {
 
                             if (openBoxStatus == 1) {
                                 bean.setStatus("success");
+                                EventBus.getDefault().post("jump_code");
                                 webSocketConnection.sendTextMessage(bean.toString());
                             } else {
                                 bean.setStatus("fail");
@@ -303,6 +309,10 @@ public class MyWebSocket implements Runnable {
                     openLight();
                     bean.setStatus("success");
                     webSocketConnection.sendTextMessage(bean.toString());
+                } else if (bean.getAction().equals("close_scan_view")) { // 关闭条形码扫描界面
+                    EventBus.getDefault().post("close_scan_view");
+                } else if (bean.getAction().equals("handle_err_books")) { // 开始处理异常，打开条形码扫描界面
+                    EventBus.getDefault().post("handle_err_books");
                 }
             }
         };
@@ -617,8 +627,13 @@ public class MyWebSocket implements Runnable {
                     bean.setBoxId(number);
                     bean.setOpenId(openId);
                     bean.setData(tagsList.toArray(new String[0]));
+                    SharedPreferences sp = WSApplication.app.getSharedPreferences("code_local", Context.MODE_PRIVATE);
+                    String barcodeList = sp.getString("code_list", "");
+                    bean.setBarcodeList(barcodeList);
 
                     webSocketConnection.sendTextMessage(bean.toString());
+
+                    EventBus.getDefault().post("close_scan_view");
 
                     Log.i(TAG, "web状态" + webSocketConnection.isConnected());
                     Log.i(TAG, "盘点: " + bean.toString());
