@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -51,6 +52,8 @@ public class CodeListActivity extends Activity {
     private CodeAdapter mAdapter;
     private String currCode = "";
     private int openType;
+    private TextView mBackV;
+    private String openId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +67,8 @@ public class CodeListActivity extends Activity {
         mAdapter = new CodeAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
-        findViewById(R.id.code_list_back).setOnClickListener(new View.OnClickListener() {
+        mBackV = findViewById(R.id.code_list_back);
+        mBackV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -75,6 +79,9 @@ public class CodeListActivity extends Activity {
 
         Intent intent = getIntent();
         openType = intent.getIntExtra("open_type", 0);
+        openId = intent.getStringExtra("openId");
+
+        mBackV.setText("type:" + openType);
     }
 
     /**
@@ -171,7 +178,7 @@ public class CodeListActivity extends Activity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             if (!mAdapter.hasContains(currCode)) {
-                getCodeBook("9787558122811"); // TODO: 2020/4/29 这是为了测试
+                getCodeBook("9787540488819"); // TODO: 2020/4/29 这是为了测试
             } else {
                 Toast.makeText(this, "这边书已添加", Toast.LENGTH_SHORT).show();
             }
@@ -183,7 +190,6 @@ public class CodeListActivity extends Activity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGetClose(String msg) {
         if ("close_scan_view".equals(msg)) {
-            dialog.dismiss();
             finish();
         } else if ("loading_code".equals(msg)) {
             showDialog();
@@ -200,8 +206,9 @@ public class CodeListActivity extends Activity {
     private void sendCodeMessage(String barcode) {
         MyWebSocket myWebSocket = WebSocketService.getMyWebSocket();
         WebSocketMessageBean bean = new WebSocketMessageBean();
-        bean.setAction("count_book");
+        bean.setAction("handle_err_books");
         bean.setMessage("书本扫描完成");
+        bean.setOpenId(openId);
         List<BookInfo.DataBean> allData = mAdapter.getAll();
         StringBuilder sb = new StringBuilder();
         sb.append("\"barcodeList\":[");
@@ -209,6 +216,8 @@ public class CodeListActivity extends Activity {
         sb.append("],");
         bean.setBarcodeList(sb.toString());
         myWebSocket.sendMessage(bean);
+
+        mBackV.setText(bean.toString());
     }
 
     @Override

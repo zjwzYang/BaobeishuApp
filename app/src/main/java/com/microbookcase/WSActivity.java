@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.andea.microbook.R;
+import com.microbookcase.service.WebSocketMessageBean;
 import com.microbookcase.service.WebSocketService;
 import com.microbookcase.service.WebSocketUtil;
 import com.microbookcase.utils.MyImageView;
@@ -180,9 +181,15 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
         } else if ("jump_code".equals(message)) {
             Intent intent = new Intent(this, CodeListActivity.class);
             startActivity(intent);
-        } else if ("handle_err_books".equals(message)) {
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetClose(WebSocketMessageBean bean) {
+        if ("handle_err_books".equals(bean.getAction())) {
             Intent intent = new Intent(this, CodeListActivity.class);
             intent.putExtra("open_type", 1);
+            intent.putExtra("openId", bean.getOpenId());
             startActivity(intent);
         }
     }
