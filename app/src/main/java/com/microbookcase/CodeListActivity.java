@@ -108,6 +108,7 @@ public class CodeListActivity extends Activity {
                         @Override
                         public void run() {
                             BookInfo bookInfo = JSON.parseObject(result, BookInfo.class);
+                            mBackV.setText(result);
                             String errorCode = bookInfo.getErrorCode();
                             if (TextUtils.isEmpty(errorCode)) {
                                 mAdapter.add(bookInfo.getData());
@@ -178,7 +179,7 @@ public class CodeListActivity extends Activity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
             if (!mAdapter.hasContains(currCode)) {
-                getCodeBook("9787540488819"); // TODO: 2020/4/29 这是为了测试
+                getCodeBook(currCode); // 9787540488819
             } else {
                 Toast.makeText(this, "这边书已添加", Toast.LENGTH_SHORT).show();
             }

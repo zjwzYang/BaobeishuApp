@@ -9,5 +9,5 @@ public class WebSocketUtil {
     public static final String ROOT_URL = WS + IP + PORT + URL;
 
     // 书本信息接口
-    public static final String get_code_book = "http://192.168.124.56:9090/out/findProductByBarcode?barcode=";
+    public static final String get_code_book = "http://192.168.124.56:9090/out/findProductByBarcode?devicename=" + DEVICE_NAME + "&barcode=";
 }
