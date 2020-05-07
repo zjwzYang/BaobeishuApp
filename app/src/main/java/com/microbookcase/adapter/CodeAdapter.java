@@ -43,7 +43,7 @@ public class CodeAdapter extends RecyclerView.Adapter<CodeAdapter.CodeViewHolder
     @Override
     public void onBindViewHolder(@NonNull CodeViewHolder holder, int position) {
         BookInfo.DataBean dataBean = dataList.get(position);
-        holder.mCodeV.setText(dataBean.getName());
+        holder.mCodeV.setText((position + 1) + "." + dataBean.getName());
     }
 
     public void clear() {

@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -44,7 +45,7 @@ import okhttp3.Response;
  * .
  *
  * @author yj
- * @org 浙江房超信息科技有限公司
+ * @org 浙江趣看点科技有限公司
  */
 public class CodeListActivity extends Activity {
 
@@ -53,6 +54,12 @@ public class CodeListActivity extends Activity {
     private String currCode = "";
     private int openType;
     private TextView mBackV;
+    private TextView mListTitle;
+    private TextView mStepOne;
+    private TextView mStepTwo;
+    private TextView mStepTwoOne;
+    private TextView mStepTwoTwo;
+    private TextView mStepThree;
     private String openId;
 
     @Override
@@ -74,6 +81,12 @@ public class CodeListActivity extends Activity {
                 finish();
             }
         });
+        mListTitle = findViewById(R.id.code_list_title);
+        mStepOne = findViewById(R.id.code_step_one);
+        mStepTwo = findViewById(R.id.code_step_two);
+        mStepTwoOne = findViewById(R.id.code_step_two_one);
+        mStepTwoTwo = findViewById(R.id.code_step_two_two);
+        mStepThree = findViewById(R.id.code_step_three);
         SharedPreferences.Editor sp = getSharedPreferences("code_local", Context.MODE_PRIVATE).edit();
         sp.clear().commit();
 
@@ -81,7 +94,26 @@ public class CodeListActivity extends Activity {
         openType = intent.getIntExtra("open_type", 0);
         openId = intent.getStringExtra("openId");
 
-        mBackV.setText("type:" + openType);
+//        mBackV.setText("type:" + openType);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            int newSize = (int) (mBackV.getHeight() * 0.4);
+            mBackV.setTextSize(TypedValue.COMPLEX_UNIT_PX, newSize);
+            mListTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, newSize);
+
+            int stepSize = (int) (mStepThree.getHeight() * 0.2);
+            mStepOne.setTextSize(TypedValue.COMPLEX_UNIT_PX, stepSize);
+            mStepTwo.setTextSize(TypedValue.COMPLEX_UNIT_PX, stepSize);
+            mStepThree.setTextSize(TypedValue.COMPLEX_UNIT_PX, stepSize);
+
+            int secondSize = (int) (stepSize / 1.5);
+            mStepTwoOne.setTextSize(TypedValue.COMPLEX_UNIT_PX, secondSize);
+            mStepTwoTwo.setTextSize(TypedValue.COMPLEX_UNIT_PX, secondSize);
+        }
     }
 
     /**
@@ -108,7 +140,7 @@ public class CodeListActivity extends Activity {
                         @Override
                         public void run() {
                             BookInfo bookInfo = JSON.parseObject(result, BookInfo.class);
-                            mBackV.setText(result);
+//                            mBackV.setText(result);
                             String errorCode = bookInfo.getErrorCode();
                             if (TextUtils.isEmpty(errorCode)) {
                                 mAdapter.add(bookInfo.getData());
@@ -218,7 +250,7 @@ public class CodeListActivity extends Activity {
         bean.setBarcodeList(sb.toString());
         myWebSocket.sendMessage(bean);
 
-        mBackV.setText(bean.toString());
+//        mBackV.setText(bean.toString());
     }
 
     @Override

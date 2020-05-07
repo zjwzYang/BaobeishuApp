@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="条形码"
+        android:textColor="#FFFFFF"
         android:textSize="25sp" />
 
 </LinearLayout>
