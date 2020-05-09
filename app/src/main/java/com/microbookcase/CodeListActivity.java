@@ -79,6 +79,7 @@ public class CodeListActivity extends Activity {
             @Override
             public void onClick(View view) {
                 finish();
+//                getCodeBook("9787540488819"); // 9787540488819
             }
         });
         mListTitle = findViewById(R.id.code_list_title);

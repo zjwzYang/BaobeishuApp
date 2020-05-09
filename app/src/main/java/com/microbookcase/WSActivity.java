@@ -30,7 +30,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WSActivity extends Activity implements android.view.View.OnTouchListener {
+public class WSActivity extends Activity implements android.view.View.OnTouchListener, View.OnClickListener {
 
     private Context mContext;
     private MyImageView ad_image;
@@ -104,7 +104,7 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
 
         //wsd_editText = findViewById(R.id.wsd_editText);
         main_button = findViewById(R.id.main_button);
-        main_button.setOnTouchListener(this);
+        main_button.setOnClickListener(this);
 
         //ad_image.setImageURL("https://img.zcool.cn/community/01caac5b8ec2cba8012017eecd66d0.jpg");
 
@@ -169,6 +169,16 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
             }
         }
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (isFastClick()) {
+            return;
+        }
+        if (R.id.main_button == view.getId()) {
+            EventBus.getDefault().post("reconnect");
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -243,5 +253,18 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    private long lastClickTime = 0;
+    private final int CLICK_TIME = 500; //快速点击间隔时间
+
+    // 判断按钮是否快速点击
+    public boolean isFastClick() {
+        long time = System.currentTimeMillis();
+        if (time - lastClickTime < CLICK_TIME) {//判断系统时间差是否小于点击间隔时间
+            return true;
+        }
+        lastClickTime = time;
+        return false;
     }
 }

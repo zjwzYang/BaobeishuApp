@@ -8,6 +8,6 @@ public class WebSocketUtil {
     private static final String URL = "/device/" + DEVICE_NAME;
     public static final String ROOT_URL = WS + IP + PORT + URL;
 
-    // 书本信息接口
+    // 书本信息接口 http://www.qukandian573.com/admin/
     public static final String get_code_book = "http://192.168.124.56:9090/out/findProductByBarcode?devicename=" + DEVICE_NAME + "&barcode=";
 }

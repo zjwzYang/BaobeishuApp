@@ -64,13 +64,18 @@ android {
 //        }
 //    }
 
-//    android.applicationVariants.all {
-//        variant ->
-//            variant.outputs.all {
-//                // 此处指定生成的apk文件名
-//                outputFileName = "BaobeishuTest.apk"
-//            }
-//    }
+    android.applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                // 此处指定生成的apk文件名
+                outputFileName = "Baobeishu_${releaseTime()}.apk"
+            }
+    }
+
+}
+
+def releaseTime() {
+    return new Date().format("HH-mm-ss", TimeZone.getTimeZone("GMT+08:00"))
 }
 
 dependencies {
