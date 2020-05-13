@@ -146,7 +146,11 @@ public class MyWebSocket implements Runnable {
 
     private void connect() {
         try {
-            webSocketConnection.connect(WebSocketUtil.ROOT_URL, getHandler());
+            if (!WebSocketUtil.IS_TEST) {
+                webSocketConnection.connect(WebSocketUtil.ROOT_URL, getHandler());
+            } else {
+                webSocketConnection.connect(WebSocketUtil.ROOT_URL_TEST, getHandler());
+            }
         } catch (WebSocketException e) {
             e.printStackTrace();
         }
@@ -158,6 +162,10 @@ public class MyWebSocket implements Runnable {
 
     public void sendMessage(WebSocketMessageBean bean) {
         this.webSocketConnection.sendTextMessage(bean.toString());
+    }
+
+    public WebSocketConnection getWebSocketConnection() {
+        return this.webSocketConnection;
     }
 
     public LockUtils getLockUtils() {

@@ -44,6 +44,7 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     private static Timer dialogTimer = null;
     private static TimerTask dialogTimerTask = null;
     private TextView mBackV;
+    private TextView mCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,23 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
             public void onClick(View view) {
                 finish();
 //                EventBus.getDefault().post("reconnect");
+            }
+        });
+        mCheck = findViewById(R.id.ws_code_check);
+        if (WebSocketUtil.IS_TEST) {
+            mCheck.setText("当前ip地址：" + WebSocketUtil.TEST_IP);
+        } else {
+            mCheck.setText("当前ip地址：" + WebSocketUtil.IP);
+        }
+        mCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                WebSocketUtil.IS_TEST = !WebSocketUtil.IS_TEST;
+                if (WebSocketUtil.IS_TEST) {
+                    mCheck.setText("当前ip地址：" + WebSocketUtil.TEST_IP);
+                } else {
+                    mCheck.setText("当前ip地址：" + WebSocketUtil.IP);
+                }
             }
         });
         findViewById(R.id.ws_code_add).setOnClickListener(new View.OnClickListener() {
@@ -185,8 +203,14 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     public void onGetMessage(String message) {
         if ("open_redy".equals(message)) {
             long timestamp = System.currentTimeMillis();
-            String url = "http://" + WebSocketUtil.IP + "/device/bind/?device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp
-                    + "&token=" + Utils.md5("device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp);
+            String url;
+            if (!WebSocketUtil.IS_TEST) {
+                url = "http://" + WebSocketUtil.IP + "/device/bind/?device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp
+                        + "&token=" + Utils.md5("device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp);
+            } else {
+                url = "http://" + WebSocketUtil.TEST_IP + "/device/bind/?device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp
+                        + "&token=" + Utils.md5("device=" + WebSocketUtil.DEVICE_NAME + "&timestamp=" + timestamp);
+            }
             showDialog(url);
         } else if ("jump_code".equals(message)) {
             Intent intent = new Intent(this, CodeListActivity.class);

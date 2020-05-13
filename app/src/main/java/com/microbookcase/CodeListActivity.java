@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -62,6 +63,9 @@ public class CodeListActivity extends Activity {
     private TextView mStepThree;
     private String openId;
 
+    private TextView mDownV;
+    private CountDownTimer countDownTimer;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +92,7 @@ public class CodeListActivity extends Activity {
         mStepTwoOne = findViewById(R.id.code_step_two_one);
         mStepTwoTwo = findViewById(R.id.code_step_two_two);
         mStepThree = findViewById(R.id.code_step_three);
+        mDownV = findViewById(R.id.code_list_down);
         SharedPreferences.Editor sp = getSharedPreferences("code_local", Context.MODE_PRIVATE).edit();
         sp.clear().commit();
 
@@ -96,6 +101,27 @@ public class CodeListActivity extends Activity {
         openId = intent.getStringExtra("openId");
 
 //        mBackV.setText("type:" + openType);
+
+        startDown();
+    }
+
+    private void startDown() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+        countDownTimer = new CountDownTimer(15000, 1000) {
+            @Override
+            public void onTick(long l) {
+                mDownV.setText("倒计时 " + (l / 1000) + " 秒");
+            }
+
+            @Override
+            public void onFinish() {
+                finish();
+            }
+        };
+        countDownTimer.start();
     }
 
     @Override
@@ -123,7 +149,12 @@ public class CodeListActivity extends Activity {
      * @param code
      */
     private void getCodeBook(String code) {
-        String url = WebSocketUtil.get_code_book + code;
+        String url;
+        if (!WebSocketUtil.IS_TEST) {
+            url = WebSocketUtil.get_code_book + code;
+        } else {
+            url = WebSocketUtil.get_code_book_test + code;
+        }
         OkHttpClient httpClient = new OkHttpClient();
         Request request = new Request.Builder().url(url).get().build();
         Call call = httpClient.newCall(request);
@@ -140,6 +171,7 @@ public class CodeListActivity extends Activity {
                     CodeListActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            startDown();
                             BookInfo bookInfo = JSON.parseObject(result, BookInfo.class);
 //                            mBackV.setText(result);
                             String errorCode = bookInfo.getErrorCode();
