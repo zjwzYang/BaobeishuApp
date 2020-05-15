@@ -62,6 +62,8 @@ public class CodeListActivity extends Activity {
     private TextView mStepTwoTwo;
     private TextView mStepThree;
     private String openId;
+    private String borrowedOrderList;
+    private String notBarcode;
 
     private TextView mDownV;
     private CountDownTimer countDownTimer;
@@ -99,6 +101,8 @@ public class CodeListActivity extends Activity {
         Intent intent = getIntent();
         openType = intent.getIntExtra("open_type", 0);
         openId = intent.getStringExtra("openId");
+        borrowedOrderList = intent.getStringExtra("borrowedOrderList");
+        notBarcode = intent.getStringExtra("notBarcode");
 
 //        mBackV.setText("type:" + openType);
 
@@ -281,6 +285,8 @@ public class CodeListActivity extends Activity {
         sb.append("\"").append(barcode).append("\"");
         sb.append("],");
         bean.setBarcodeList(sb.toString());
+        bean.setBorrowedOrderList(borrowedOrderList);
+        bean.setNotBarcode(notBarcode);
         myWebSocket.sendMessage(bean);
 
 //        mBackV.setText(bean.toString());

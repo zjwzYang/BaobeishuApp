@@ -224,6 +224,8 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
             Intent intent = new Intent(this, CodeListActivity.class);
             intent.putExtra("open_type", 1);
             intent.putExtra("openId", bean.getOpenId());
+            intent.putExtra("borrowedOrderList", bean.getBorrowedOrderList());
+            intent.putExtra("notBarcode", bean.getNotBarcode());
             startActivity(intent);
         }
     }

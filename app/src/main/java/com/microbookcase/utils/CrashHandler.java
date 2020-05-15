@@ -13,7 +13,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.microbookcase.MainActivity;
+import com.microbookcase.WSActivity;
 import com.microbookcase.service.MyWebSocket;
 import com.microbookcase.service.WebSocketService;
 
@@ -86,22 +86,21 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         if (!handleException(ex) && mDefaultHandler != null) {
             // 如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
-        } else {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                Log.e(TAG, "error : ", e);
-            }
-            // 退出程序
-            Intent intent = new Intent(mApplication, MainActivity.class);
-            PendingIntent restartIntent = PendingIntent.getActivity(
-                    mApplication.getApplicationContext(), 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
-            //退出程序
-            AlarmManager mgr = (AlarmManager) mApplication.getSystemService(Context.ALARM_SERVICE);
-            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000,
-                    restartIntent); // 1秒钟后重启应用
-            android.os.Process.killProcess(android.os.Process.myPid());
         }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Log.e(TAG, "error : ", e);
+        }
+        // 退出程序
+        Intent intent = new Intent(mApplication, WSActivity.class);
+        PendingIntent restartIntent = PendingIntent.getActivity(
+                mApplication.getApplicationContext(), 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+        //退出程序
+        AlarmManager mgr = (AlarmManager) mApplication.getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000,
+                restartIntent); // 1秒钟后重启应用
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     /**
@@ -119,7 +118,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             @Override
             public void run() {
                 Looper.prepare();
-                Toast.makeText(mApplication, "很抱歉,程序出现异常即将退出.", Toast.LENGTH_LONG).show();
+                Toast.makeText(mApplication, "很抱歉,程序出现异常即将重启.", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
         }.start();

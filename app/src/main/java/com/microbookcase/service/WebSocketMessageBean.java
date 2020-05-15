@@ -11,10 +11,27 @@ public class WebSocketMessageBean {
     private String[] data;
     private String barcodeList;
     private String status;
+    private String borrowedOrderList;
+    private String notBarcode;
 
     public WebSocketMessageBean() {
     }
 
+    public String getBorrowedOrderList() {
+        return borrowedOrderList;
+    }
+
+    public void setBorrowedOrderList(String borrowedOrderList) {
+        this.borrowedOrderList = borrowedOrderList;
+    }
+
+    public String getNotBarcode() {
+        return notBarcode;
+    }
+
+    public void setNotBarcode(String notBarcode) {
+        this.notBarcode = notBarcode;
+    }
 
     public String getMessage() {
         return message;
@@ -100,6 +117,12 @@ public class WebSocketMessageBean {
         }
         if (status != null) {
             sb.append("\"status\":\"").append(status).append("\",");
+        }
+        if (borrowedOrderList != null) {
+            sb.append("\"borrowedOrderList\":\"").append(borrowedOrderList).append("\",");
+        }
+        if (notBarcode != null) {
+            sb.append("\"notBarcode\":\"").append(notBarcode).append("\",");
         }
         if (data != null && data.length > 0) {
             sb.append("\"data\":[");
