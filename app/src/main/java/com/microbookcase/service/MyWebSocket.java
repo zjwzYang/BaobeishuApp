@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.andea.lockuntils.LockUtils;
@@ -196,6 +195,7 @@ public class MyWebSocket implements Runnable {
                 // 暂时处理
                 stopSendBeat();
                 startReconnect();
+                // Toast.makeText(WSApplication.app, code + " , " + reason, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -211,7 +211,7 @@ public class MyWebSocket implements Runnable {
                 // Log.i(TAG, payLoad);
                 WebSocketMessageBean bean = JSON.parseObject(payLoad, WebSocketMessageBean.class);
                 //new TypeReference<WebSocketMessageBean>() {});
-                Toast.makeText(WSApplication.app, bean.getAction(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(WSApplication.app, bean.getAction(), Toast.LENGTH_SHORT).show();
 
                 /**
                  * 书柜主体业务逻辑

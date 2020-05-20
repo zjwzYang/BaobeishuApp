@@ -49,9 +49,9 @@
     <string name="editText_hint">打开1号门请输入：open 1</string>
     <string name="ws_send">发送</string>
 
-    <string name="code_step_one">第一步，小程序上打开书柜格口</string>
+    <string name="code_step_one">小程序上点击“借/还”，扫码打开格口</string>
     <string name="code_step_two">第二步，借书/还书</string>
-    <string name="code_step_two_one">1.借书时，取出书后，在书柜左下方下扫描条形码；</string>
-    <string name="code_step_two_two">2.还书时，在书柜左下方扫描条形码后，把书放入书柜；</string>
-    <string name="code_step_three">第三步，关上书柜格口</string>
+    <string name="code_step_two_one">借书：取出图书-扫描图书后方条形码</string>
+    <string name="code_step_two_two">还书：扫描图书后方条形码-放入图书</string>
+    <string name="code_step_three">关闭格口，完成操作</string>
 </resources>

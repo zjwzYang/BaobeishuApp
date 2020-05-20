@@ -15,6 +15,7 @@
         android:visibility="visible">
 
         <LinearLayout
+            android:id="@+id/ws_test_linear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

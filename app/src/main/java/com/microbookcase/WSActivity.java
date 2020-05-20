@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.andea.microbook.R;
@@ -46,6 +47,8 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     private TextView mBackV;
     private TextView mCheck;
 
+    private LinearLayout mTestLinear;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +78,14 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
 //                EventBus.getDefault().post("reconnect");
             }
         });
+        mTestLinear = findViewById(R.id.ws_test_linear);
         mCheck = findViewById(R.id.ws_code_check);
         if (WebSocketUtil.IS_TEST) {
             mCheck.setText("当前ip地址：" + WebSocketUtil.TEST_IP);
+            mTestLinear.setVisibility(View.VISIBLE);
         } else {
             mCheck.setText("当前ip地址：" + WebSocketUtil.IP);
+            mTestLinear.setVisibility(View.GONE);
         }
         mCheck.setOnClickListener(new View.OnClickListener() {
             @Override

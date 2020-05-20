@@ -15,6 +15,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import com.microbookcase.service.MyWebSocket;
 import com.microbookcase.service.WebSocketMessageBean;
 import com.microbookcase.service.WebSocketService;
 import com.microbookcase.service.WebSocketUtil;
+import com.microbookcase.view.ArrowView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -68,6 +70,9 @@ public class CodeListActivity extends Activity {
     private TextView mDownV;
     private CountDownTimer countDownTimer;
 
+    private ArrowView arrowView1;
+    private ArrowView arrowView2;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +89,12 @@ public class CodeListActivity extends Activity {
         mBackV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-//                getCodeBook("9787540488819"); // 9787540488819
+//                finish();
+                try {
+                    getCodeBook("9787533264291"); // 9787540488819
+                } catch (Exception e) {
+                    Log.i("12345678", "onClick: " + e.toString());
+                }
             }
         });
         mListTitle = findViewById(R.id.code_list_title);
@@ -95,6 +104,8 @@ public class CodeListActivity extends Activity {
         mStepTwoTwo = findViewById(R.id.code_step_two_two);
         mStepThree = findViewById(R.id.code_step_three);
         mDownV = findViewById(R.id.code_list_down);
+        arrowView1 = findViewById(R.id.code_step_arrow1);
+        arrowView2 = findViewById(R.id.code_step_arrow2);
         SharedPreferences.Editor sp = getSharedPreferences("code_local", Context.MODE_PRIVATE).edit();
         sp.clear().commit();
 
@@ -106,7 +117,17 @@ public class CodeListActivity extends Activity {
 
 //        mBackV.setText("type:" + openType);
 
-        startDown();
+        if (openType == 1) {
+            startDown();
+        } else {
+            mDownV.setText("返回");
+            mDownV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+        }
     }
 
     private void startDown() {
@@ -114,7 +135,7 @@ public class CodeListActivity extends Activity {
             countDownTimer.cancel();
             countDownTimer = null;
         }
-        countDownTimer = new CountDownTimer(15000, 1000) {
+        countDownTimer = new CountDownTimer(25000, 1000) {
             @Override
             public void onTick(long l) {
                 mDownV.setText("倒计时 " + (l / 1000) + " 秒");
@@ -142,8 +163,17 @@ public class CodeListActivity extends Activity {
             mStepThree.setTextSize(TypedValue.COMPLEX_UNIT_PX, stepSize);
 
             int secondSize = (int) (stepSize / 1.5);
-            mStepTwoOne.setTextSize(TypedValue.COMPLEX_UNIT_PX, secondSize);
-            mStepTwoTwo.setTextSize(TypedValue.COMPLEX_UNIT_PX, secondSize);
+            mStepTwoOne.setTextSize(TypedValue.COMPLEX_UNIT_PX, stepSize);
+            mStepTwoTwo.setTextSize(TypedValue.COMPLEX_UNIT_PX, stepSize);
+
+            int arrowHeight = arrowView1.getHeight();
+            Log.i("12345678", "onWindowFocusChanged: "+arrowHeight);
+            ViewGroup.LayoutParams arrow1Param = arrowView1.getLayoutParams();
+            ViewGroup.LayoutParams arrow2Param = arrowView2.getLayoutParams();
+            arrow1Param.width = arrowHeight;
+            arrow2Param.width = arrowHeight;
+            arrowView1.setLayoutParams(arrow1Param);
+            arrowView2.setLayoutParams(arrow2Param);
         }
     }
 
@@ -175,15 +205,18 @@ public class CodeListActivity extends Activity {
                     CodeListActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            startDown();
+                            if (openType == 1) {
+                                startDown();
+                            }
                             BookInfo bookInfo = JSON.parseObject(result, BookInfo.class);
 //                            mBackV.setText(result);
                             String errorCode = bookInfo.getErrorCode();
                             if (TextUtils.isEmpty(errorCode)) {
                                 mAdapter.add(bookInfo.getData());
+                                mRecyclerView.scrollToPosition(mAdapter.getItemCount());
 
                                 if (openType == 1) {
-                                    sendCodeMessage(bookInfo.getData().getRfId());
+                                    sendCodeMessage(bookInfo.getData());
                                 } else {
                                     // 把条形码数据存本地
                                     List<BookInfo.DataBean> allData = mAdapter.getAll();
@@ -194,7 +227,7 @@ public class CodeListActivity extends Activity {
                                         if (TextUtils.isEmpty(rfId)) {
                                             continue;
                                         }
-                                        sb.append("\"").append(rfId).append("\"");
+                                        sb.append("{\"barcode\":\"").append(rfId).append("\",\"name\":\"\"}");
                                         if (i < allData.size() - 1) {
                                             sb.append(",");
                                         }
@@ -273,7 +306,7 @@ public class CodeListActivity extends Activity {
                 , false, true);
     }
 
-    private void sendCodeMessage(String barcode) {
+    private void sendCodeMessage(BookInfo.DataBean dataBean) {
         MyWebSocket myWebSocket = WebSocketService.getMyWebSocket();
         WebSocketMessageBean bean = new WebSocketMessageBean();
         bean.setAction("handle_err_books");
@@ -281,9 +314,9 @@ public class CodeListActivity extends Activity {
         bean.setOpenId(openId);
         List<BookInfo.DataBean> allData = mAdapter.getAll();
         StringBuilder sb = new StringBuilder();
-        sb.append("\"barcodeList\":[");
-        sb.append("\"").append(barcode).append("\"");
-        sb.append("],");
+        sb.append("\"barcodeList\":[{");
+        sb.append("\"barcode\":\"").append(dataBean.getRfId()).append("\",\"name\":\"").append(dataBean.getName());
+        sb.append("\"}],");
         bean.setBarcodeList(sb.toString());
         bean.setBorrowedOrderList(borrowedOrderList);
         bean.setNotBarcode(notBarcode);

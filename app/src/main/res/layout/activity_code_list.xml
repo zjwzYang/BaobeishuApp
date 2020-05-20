@@ -78,9 +78,11 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
+                <com.microbookcase.view.ArrowView
+                    android:id="@+id/code_step_arrow1"
+                    android:layout_width="40dp"
                     android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="40" />
 
                 <LinearLayout
@@ -99,33 +101,37 @@
                         android:gravity="center_horizontal"
                         android:text="@string/code_step_two"
                         android:textColor="#49F0FB"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/code_step_two_one"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
                         android:text="@string/code_step_two_one"
-                        android:textColor="#ffffff"
+                        android:textColor="#49F0FB"
                         android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/code_step_two_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="30dp"
+                        android:gravity="center_horizontal"
                         android:text="@string/code_step_two_two"
-                        android:textColor="#ffffff"
+                        android:textColor="#49F0FB"
                         android:textSize="20sp" />
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
+                <com.microbookcase.view.ArrowView
+                    android:id="@+id/code_step_arrow2"
+                    android:layout_width="40dp"
                     android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="40" />
-
 
                 <TextView
                     android:id="@+id/code_step_three"
