@@ -12,6 +12,7 @@
         android:layout_gravity="start|top"
         android:background="#ffffff"
         android:orientation="vertical"
+        android:paddingTop="15dp"
         android:visibility="visible">
 
         <LinearLayout

@@ -86,17 +86,17 @@ public class CodeListActivity extends Activity {
         mRecyclerView.setAdapter(mAdapter);
 
         mBackV = findViewById(R.id.code_list_back);
-        mBackV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                finish();
-                try {
-                    getCodeBook("9787533264291"); // 9787540488819
-                } catch (Exception e) {
-                    Log.i("12345678", "onClick: " + e.toString());
-                }
-            }
-        });
+//        mBackV.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                finish();
+//                try {
+//                    getCodeBook("9787533258634"); // 9787540488819
+//                } catch (Exception e) {
+//                    Log.i("12345678", "onClick: " + e.toString());
+//                }
+//            }
+//        });
         mListTitle = findViewById(R.id.code_list_title);
         mStepOne = findViewById(R.id.code_step_one);
         mStepTwo = findViewById(R.id.code_step_two);
@@ -322,7 +322,6 @@ public class CodeListActivity extends Activity {
         bean.setNotBarcode(notBarcode);
         myWebSocket.sendMessage(bean);
 
-//        mBackV.setText(bean.toString());
     }
 
     @Override
