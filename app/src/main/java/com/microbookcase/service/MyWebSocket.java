@@ -129,16 +129,20 @@ public class MyWebSocket implements Runnable {
 
     @Override
     public void run() {
-        webSocketConnection = new WebSocketConnection() {
-            @Override
-            public void sendTextMessage(String payload) {
-                super.sendTextMessage(payload);
-            }
-        };
-        startReconnect();//重连检测
-        initRfidReader();
-        initRFIDuser();
-        startCheckDoor();
+        try {
+            webSocketConnection = new WebSocketConnection() {
+                @Override
+                public void sendTextMessage(String payload) {
+                    super.sendTextMessage(payload);
+                }
+            };
+            startReconnect();//重连检测
+            initRfidReader();
+            initRFIDuser();
+            startCheckDoor();
+        } catch (Exception e) {
+
+        }
         // initRfidReader();
         //  initRFIDuser();
     }
@@ -244,81 +248,109 @@ public class MyWebSocket implements Runnable {
                     }
                     return;
                 } else if (bean.getAction().equals("open_box")) {
-                    if (doorFlag == 0) { //门全关的
-                        if (bean.getBoxId() > 0) {
-                            isOpenAll = false;
-                            int openBoxStatus = openBox(bean.getBoxId());
-                            arrOpenId[bean.getBoxId()] = bean.getOpenId();
+                    try {
+                        if (doorFlag == 0) { //门全关的
+                            if (bean.getBoxId() > 0) {
+                                isOpenAll = false;
+                                int openBoxStatus = openBox(bean.getBoxId());
+                                arrOpenId[bean.getBoxId()] = bean.getOpenId();
 
-                            if (openBoxStatus == 1) {
-                                bean.setStatus("success");
-                                EventBus.getDefault().post("jump_code");
-                                webSocketConnection.sendTextMessage(bean.toString());
-                            } else {
-                                bean.setStatus("fail");
-                                webSocketConnection.sendTextMessage(bean.toString());
-                            }
-                        } else if (bean.getBoxId() == 0) {
-                            isOpenAll = true;
-                            arrOpenId[0] = bean.getOpenId();
-                            int openBoxStatus = 0;
-                            for (int i = 1; i <= BOX_AMOUNT; i++) {
-                                openBoxStatus += openBox(i);
-                                arrOpenId[i] = bean.getOpenId();
-                            }
+                                if (openBoxStatus == 1) {
+                                    bean.setStatus("success");
+                                    EventBus.getDefault().post("jump_code");
+                                    webSocketConnection.sendTextMessage(bean.toString());
+                                } else {
+                                    bean.setStatus("fail");
+                                    webSocketConnection.sendTextMessage(bean.toString());
+                                }
+                            } else if (bean.getBoxId() == 0) {
+                                isOpenAll = true;
+                                arrOpenId[0] = bean.getOpenId();
+                                int openBoxStatus = 0;
+                                for (int i = 1; i <= BOX_AMOUNT; i++) {
+                                    openBoxStatus += openBox(i);
+                                    arrOpenId[i] = bean.getOpenId();
+                                }
 
-                            if (openBoxStatus == 8) {
-                                bean.setStatus("success");
-                                webSocketConnection.sendTextMessage(bean.toString());
-                            } else {
-                                bean.setStatus("fail");
-                                bean.setMessage("有门未成功打开，请检查");
-                                webSocketConnection.sendTextMessage(bean.toString());
+                                if (openBoxStatus == 8) {
+                                    bean.setStatus("success");
+                                    webSocketConnection.sendTextMessage(bean.toString());
+                                } else {
+                                    bean.setStatus("fail");
+                                    bean.setMessage("有门未成功打开，请检查");
+                                    webSocketConnection.sendTextMessage(bean.toString());
+                                }
                             }
+                        } else {
+                            bean.setStatus("error");
+                            bean.setMessage("有门未关好，请关好门后再开门");
+                            webSocketConnection.sendTextMessage(bean.toString());
                         }
-                    } else {
-                        bean.setStatus("error");
-                        bean.setMessage("有门未关好，请关好门后再开门");
-                        webSocketConnection.sendTextMessage(bean.toString());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 } else if (bean.getAction().equals("count_book")) {//管理员盘点图书
-                    if (doorFlag == 0) { //门全关的
-                        //此处盘点书柜
-                        checkBoxTags(bean.getBoxId(), bean.getOpenId());//盘点
-                    } else {
-                        bean.setStatus("error");
-                        bean.setMessage("有门未关好，请关好门后再盘点书柜");
-                        webSocketConnection.sendTextMessage(bean.toString());
+                    try {
+                        if (doorFlag == 0) { //门全关的
+                            //此处盘点书柜
+                            checkBoxTags(bean.getBoxId(), bean.getOpenId());//盘点
+                        } else {
+                            bean.setStatus("error");
+                            bean.setMessage("有门未关好，请关好门后再盘点书柜");
+                            webSocketConnection.sendTextMessage(bean.toString());
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 } else if (bean.getAction().equals("open_light")) {//管理员盘点图书
-                    openLight();
-                    bean.setStatus("success");
-                    webSocketConnection.sendTextMessage(bean.toString());
-                } else if (bean.getAction().equals("close_light")) {//管理员盘点图书
-                    closeLight();
-                    bean.setStatus("success");
-                    webSocketConnection.sendTextMessage(bean.toString());
-                } else if (bean.getAction().equals("reconnect")) {//管理员盘点图书
-                    if (doorFlag == 0) { //门全关的
-                        //此处盘点书柜
-                        webSocketConnection.disconnect();
-                        connect();
-                    } else {
-                        bean.setStatus("error");
-                        bean.setMessage("有门未关好，请关好门后再盘点书柜");
+                    try {
+                        openLight();
+                        bean.setStatus("success");
                         webSocketConnection.sendTextMessage(bean.toString());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else if (bean.getAction().equals("close_light")) {//管理员盘点图书
+                    try {
+                        closeLight();
+                        bean.setStatus("success");
+                        webSocketConnection.sendTextMessage(bean.toString());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                } else if (bean.getAction().equals("reconnect")) {//管理员盘点图书
+                    try {
+                        if (doorFlag == 0) { //门全关的
+                            //此处盘点书柜
+                            webSocketConnection.disconnect();
+                            connect();
+                        } else {
+                            bean.setStatus("error");
+                            bean.setMessage("有门未关好，请关好门后再盘点书柜");
+                            webSocketConnection.sendTextMessage(bean.toString());
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 } else if (bean.getAction().equals("exit")) {//管理员盘点图书
                     System.err.println("exit");
                     System.exit(0);//正常退出
                 } else if (bean.getAction().equals("close_light")) {//管理员盘点图书
-                    closeLight();
-                    bean.setStatus("success");
-                    webSocketConnection.sendTextMessage(bean.toString());
+                    try {
+                        closeLight();
+                        bean.setStatus("success");
+                        webSocketConnection.sendTextMessage(bean.toString());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 } else if (bean.getAction().equals("open_light")) {//管理员盘点图书
-                    openLight();
-                    bean.setStatus("success");
-                    webSocketConnection.sendTextMessage(bean.toString());
+                    try {
+                        openLight();
+                        bean.setStatus("success");
+                        webSocketConnection.sendTextMessage(bean.toString());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 } else if (bean.getAction().equals("close_scan_view")) { // 关闭条形码扫描界面
                     EventBus.getDefault().post("close_scan_view");
                 } else if (bean.getAction().equals("handle_err_books")) { // 开始处理异常，打开条形码扫描界面
@@ -338,55 +370,63 @@ public class MyWebSocket implements Runnable {
 
 
     private void startBeat() {
-        /** 定时器 **/
-        beatTimer = new Timer();
-        TimerTask beatTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Log.i(TAG, "run: 心跳");
-                // 夜间开灯
-                if (isLightOpened) {
-                    if (!isDeviceInUse) {
-                        int hour = getNowTime();
-                        if (hour < LIGHT_BEGIN || hour > LIGHT_END) {
-                            closeLight();
+        try {
+            /** 定时器 **/
+            beatTimer = new Timer();
+            TimerTask beatTimerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Log.i(TAG, "run: 心跳");
+                    try {
+                        // 夜间开灯
+                        if (isLightOpened) {
+                            if (!isDeviceInUse) {
+                                int hour = getNowTime();
+                                if (hour < LIGHT_BEGIN || hour > LIGHT_END) {
+                                    closeLight();
+                                }
+                            }
+                        } else if (isNightLightOn) {
+                            int hour = getNowTime();
+                            if (hour >= LIGHT_BEGIN && hour <= LIGHT_END) {
+                                openLight();
+                            }
                         }
-                    }
-                } else if (isNightLightOn) {
-                    int hour = getNowTime();
-                    if (hour >= LIGHT_BEGIN && hour <= LIGHT_END) {
-                        openLight();
-                    }
-                }
 
-                //消毒灯
-                if (isSterilampOpened) {
-                    int hour = getNowTime();
-                    if (hour < STERILAMP_BEGIN || hour > STERILAMP_END) {
-                        closeSterilamp();
-                    }
-                } else if (isSterilampOn) {
-                    int hour = getNowTime();
-                    if (hour >= STERILAMP_BEGIN && hour <= STERILAMP_END) {
-                        openSterilamp();
-                    }
-                }
+                        //消毒灯
+                        if (isSterilampOpened) {
+                            int hour = getNowTime();
+                            if (hour < STERILAMP_BEGIN || hour > STERILAMP_END) {
+                                closeSterilamp();
+                            }
+                        } else if (isSterilampOn) {
+                            int hour = getNowTime();
+                            if (hour >= STERILAMP_BEGIN && hour <= STERILAMP_END) {
+                                openSterilamp();
+                            }
+                        }
 
-                long thisBeatTime = new Date().getTime();
-                /** 只能发送String **/
-                if (webSocketConnection != null && webSocketConnection.isConnected()) {
-                    webSocketConnection.sendTextMessage("{\"action\":\"heartbeat\"}");
-                    lastBeatSuccessTime = thisBeatTime;
-                } else {
-                    if (lastBeatSuccessTime != 0 && (thisBeatTime - lastBeatSuccessTime) > BEAT_MAX_UNCON_SPACE) {
-                        /** 判断 当前时间 距离 上次连接时间 已经超过 设定的 最长未连接时间，开启重连**/
-                        stopSendBeat();
-                        startReconnect();
+                        long thisBeatTime = new Date().getTime();
+                        /** 只能发送String **/
+                        if (webSocketConnection != null && webSocketConnection.isConnected()) {
+                            webSocketConnection.sendTextMessage("{\"action\":\"heartbeat\"}");
+                            lastBeatSuccessTime = thisBeatTime;
+                        } else {
+                            if (lastBeatSuccessTime != 0 && (thisBeatTime - lastBeatSuccessTime) > BEAT_MAX_UNCON_SPACE) {
+                                /** 判断 当前时间 距离 上次连接时间 已经超过 设定的 最长未连接时间，开启重连**/
+                                stopSendBeat();
+                                startReconnect();
+                            }
+                        }
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
                     }
                 }
-            }
-        };
-        beatTimer.schedule(beatTimerTask, DELAY, BEATSPACE);
+            };
+            beatTimer.schedule(beatTimerTask, DELAY, BEATSPACE);
+        } catch (Exception e) {
+
+        }
     }
 
     private void stopSendBeat() {
@@ -401,15 +441,19 @@ public class MyWebSocket implements Runnable {
     }
 
     private void startReconnect() {
-        wsReconnectTimer = new Timer();
-        TimerTask wsReconnectTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Log.i(TAG, "run: 重连");
-                connect();
-            }
-        };
-        wsReconnectTimer.schedule(wsReconnectTimerTask, 0, RECONNECTSPACE);
+        try {
+            wsReconnectTimer = new Timer();
+            TimerTask wsReconnectTimerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    Log.i(TAG, "run: 重连");
+                    connect();
+                }
+            };
+            wsReconnectTimer.schedule(wsReconnectTimerTask, 0, RECONNECTSPACE);
+        } catch (Exception e) {
+
+        }
     }
 
     public void disconnect() {
@@ -432,7 +476,7 @@ public class MyWebSocket implements Runnable {
         }
     }
 
-    private void startCheckDoor() {
+    private void startCheckDoor() throws Exception {
         checkDoorTimer = new Timer();
         TimerTask checkDoorTimerTask = new TimerTask() {
             @Override

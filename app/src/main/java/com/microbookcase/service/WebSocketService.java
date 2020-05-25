@@ -1,16 +1,12 @@
 package com.microbookcase.service;
 
-import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Calendar;
 
 public class WebSocketService extends Service {
 
@@ -28,13 +24,17 @@ public class WebSocketService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        EventBus.getDefault().register(this);
-        /** 建立连接 **/
-        myWebSocket = new MyWebSocket();
+        try {
+            EventBus.getDefault().register(this);
+            /** 建立连接 **/
+            myWebSocket = new MyWebSocket();
 
-        myWebSocket.getLockUtils().initLock("/dev/ttyS0");
-        myWebSocket.getLockUtils2().initLight("/dev/ttyS1");
-        myWebSocket.run();
+            myWebSocket.getLockUtils().initLock("/dev/ttyS0");
+            myWebSocket.getLockUtils2().initLight("/dev/ttyS1");
+            myWebSocket.run();
+        } catch (Exception e) {
+
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

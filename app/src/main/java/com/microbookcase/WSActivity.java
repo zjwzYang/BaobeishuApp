@@ -64,50 +64,54 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
 //                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_ws);
-        mContext = this;
+        try {
+            mContext = this;
 
-        Intent intentService = new Intent(mContext, WebSocketService.class);
-        startService(intentService);
+            Intent intentService = new Intent(mContext, WebSocketService.class);
+            startService(intentService);
 
-        initView();
-        mBackV = findViewById(R.id.ws_back);
-        mBackV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
+            initView();
+            mBackV = findViewById(R.id.ws_back);
+            mBackV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
 //                EventBus.getDefault().post("reconnect");
-            }
-        });
-        mTestLinear = findViewById(R.id.ws_test_linear);
-        mCheck = findViewById(R.id.ws_code_check);
-        if (WebSocketUtil.IS_TEST) {
-            mCheck.setText("当前ip地址：" + WebSocketUtil.TEST_IP);
-            mTestLinear.setVisibility(View.VISIBLE);
-        } else {
-            mCheck.setText("当前ip地址：" + WebSocketUtil.IP);
-            mTestLinear.setVisibility(View.GONE);
-        }
-        mCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                WebSocketUtil.IS_TEST = !WebSocketUtil.IS_TEST;
-                if (WebSocketUtil.IS_TEST) {
-                    mCheck.setText("当前ip地址：" + WebSocketUtil.TEST_IP);
-                } else {
-                    mCheck.setText("当前ip地址：" + WebSocketUtil.IP);
                 }
+            });
+            mTestLinear = findViewById(R.id.ws_test_linear);
+            mCheck = findViewById(R.id.ws_code_check);
+            if (WebSocketUtil.IS_TEST) {
+                mCheck.setText("当前ip地址：" + WebSocketUtil.TEST_IP);
+                mTestLinear.setVisibility(View.VISIBLE);
+            } else {
+                mCheck.setText("当前ip地址：" + WebSocketUtil.IP);
+                mTestLinear.setVisibility(View.GONE);
             }
-        });
-        findViewById(R.id.ws_code_add).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent codeintent = new Intent(WSActivity.this, CodeListActivity.class);
-                startActivity(codeintent);
-            }
-        });
+            mCheck.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    WebSocketUtil.IS_TEST = !WebSocketUtil.IS_TEST;
+                    if (WebSocketUtil.IS_TEST) {
+                        mCheck.setText("当前ip地址：" + WebSocketUtil.TEST_IP);
+                    } else {
+                        mCheck.setText("当前ip地址：" + WebSocketUtil.IP);
+                    }
+                }
+            });
+            findViewById(R.id.ws_code_add).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent codeintent = new Intent(WSActivity.this, CodeListActivity.class);
+                    startActivity(codeintent);
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 
-    public void initView() {
+    public void initView() throws Exception {
         //second_button = findViewById(R.id.second_button);
         /*second_button.setOnTouchListener(new View.OnTouchListener() {
             //需要监听几次点击事件数组的长度就为几
