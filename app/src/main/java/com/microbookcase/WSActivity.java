@@ -48,6 +48,7 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     private TextView mCheck;
 
     private LinearLayout mTestLinear;
+    private Intent intentService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,7 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
         try {
             mContext = this;
 
-            Intent intentService = new Intent(mContext, WebSocketService.class);
+            intentService = new Intent(mContext, WebSocketService.class);
             startService(intentService);
 
             initView();
@@ -104,6 +105,7 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
                 public void onClick(View view) {
                     Intent codeintent = new Intent(WSActivity.this, CodeListActivity.class);
                     startActivity(codeintent);
+//                    WebSocketService.getMyWebSocket().disconnect();
                 }
             });
         } catch (Exception e) {
@@ -289,6 +291,9 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (intentService != null) {
+            stopService(intentService);
+        }
     }
 
     private long lastClickTime = 0;

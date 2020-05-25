@@ -190,6 +190,7 @@ public class MyWebSocket implements Runnable {
                 startBeat();
                 Log.i(TAG, "onOpen: 开启");
                 EventBus.getDefault().post("open_redy");
+//                Toast.makeText(WSApplication.app, "onOpen: 开启", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -198,7 +199,7 @@ public class MyWebSocket implements Runnable {
                 Log.i(TAG, code + " , " + reason);
                 // 暂时处理
                 stopSendBeat();
-                startReconnect();
+                //startReconnect();
                 // Toast.makeText(WSApplication.app, code + " , " + reason, Toast.LENGTH_SHORT).show();
             }
 
@@ -440,7 +441,7 @@ public class MyWebSocket implements Runnable {
         }
     }
 
-    private void startReconnect() {
+    public void startReconnect() {
         try {
             wsReconnectTimer = new Timer();
             TimerTask wsReconnectTimerTask = new TimerTask() {

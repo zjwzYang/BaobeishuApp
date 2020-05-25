@@ -41,13 +41,22 @@ public class WebSocketService extends Service {
     public void onGetMessage(String message) {
         if ("reconnect".equals(message)) {
 //            Log.i("12345678", "onGetMessage: 重启");
-            myWebSocket.disconnect();
+//            Toast.makeText(this, "是否连接：" + myWebSocket.isConnected(), Toast.LENGTH_SHORT).show();
+            if (myWebSocket.isConnected()) {
+                EventBus.getDefault().post("open_redy");
+            } else {
+                myWebSocket.startReconnect();
+            }
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (myWebSocket != null) {
+            myWebSocket.disconnect();
+            myWebSocket = null;
+        }
         EventBus.getDefault().unregister(this);
     }
 }
