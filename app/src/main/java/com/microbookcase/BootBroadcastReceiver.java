@@ -3,7 +3,6 @@ package com.microbookcase;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 
 public class BootBroadcastReceiver extends BroadcastReceiver {
 

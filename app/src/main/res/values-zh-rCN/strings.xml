@@ -51,7 +51,7 @@
 
     <string name="code_step_one">小程序上点击“借/还”，扫码打开格口</string>
     <string name="code_step_two">第二步，借书/还书</string>
-    <string name="code_step_two_one">借书：取出图书-扫描图书后方条形码</string>
-    <string name="code_step_two_two">还书：扫描图书后方条形码-放入图书</string>
+    <string name="code_step_two_one">借书：取出图书-扫描图书条形码</string>
+    <string name="code_step_two_two">还书：扫描图书条形码-放入图书</string>
     <string name="code_step_three">关闭格口，完成操作</string>
 </resources>
