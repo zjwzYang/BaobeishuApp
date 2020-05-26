@@ -54,10 +54,12 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        String UNIQUE_STRING = "com.mobilepower.terminal.message";
-        Intent intent = new Intent(UNIQUE_STRING);
-        intent.putExtra("type", 18);
-        sendBroadcast(intent);
+        if (!WebSocketUtil.IS_TEST) {
+            String UNIQUE_STRING = "com.mobilepower.terminal.message";
+            Intent intent = new Intent(UNIQUE_STRING);
+            intent.putExtra("type", 18);
+            sendBroadcast(intent);
+        }
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 

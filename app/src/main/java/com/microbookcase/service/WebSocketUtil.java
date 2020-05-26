@@ -12,8 +12,8 @@ public class WebSocketUtil {
 
 
     // 测试的接口  2a943044t6.zicp.vip
-    public static final String TEST_IP = "www.fayshine.cn";
-    public static final String get_code_book_test = "http://192.168.124.56:9090/out/findProductByBarcode?devicename=" + DEVICE_NAME + "&barcode=";
+    public static final String TEST_IP = "2a943044t6.zicp.vip";
+    public static final String get_code_book_test = "http://192.168.124.56:8080/out/findProductByBarcode?devicename=" + DEVICE_NAME + "&barcode=";
     public static final String ROOT_URL_TEST = WS + TEST_IP + PORT + URL;
 
     public static boolean IS_TEST = false;

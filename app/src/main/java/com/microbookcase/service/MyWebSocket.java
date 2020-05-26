@@ -2,6 +2,7 @@ package com.microbookcase.service;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.rfid.def.RfidDef;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -243,6 +245,45 @@ public class MyWebSocket implements Runnable {
                             }
                             setSterilampBegin(Integer.parseInt(data[4]));
                             setSterilampEnd(Integer.parseInt(data[5]));
+                        } else if (data.length == 8) {
+                            int nightOn = Integer.parseInt(data[0]);
+                            if (nightOn == 0) {
+                                setIsNightLightOn(false);
+                            } else {
+                                setIsNightLightOn(true);
+                            }
+                            setLightBegin(Integer.parseInt(data[1]));
+                            setLightEnd(Integer.parseInt(data[2]));
+
+                            int steriOn = Integer.parseInt(data[3]);
+                            if (steriOn == 0) {
+                                setIsSterilampOn(false);
+                            } else {
+                                setIsSterilampOn(true);
+                            }
+                            setSterilampBegin(Integer.parseInt(data[4]));
+                            setSterilampEnd(Integer.parseInt(data[5]));
+
+                            // 定制开机关机时间
+                            int shutOn = Integer.parseInt(data[6]);
+                            String ACTION_UBOX_SHUTDOWN = "com.ubox.auto_power_shut";
+                            Intent intent = new Intent(ACTION_UBOX_SHUTDOWN);
+                            if (shutOn == 1) {
+                                // effective 字段说明：true 为启动自动重启功能,false 为关闭功能
+                                intent.putExtra("effective", true);
+                            } else {
+                                intent.putExtra("effective", false);
+                            }
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                            Date shunDate = sdf.parse(data[7]);
+                            Date powerDate = new Date(shunDate.getTime() + 2 * 60 * 1000);
+                            String powerS = sdf.format(powerDate);
+
+                            // shut_time 设置关机时间
+                            intent.putExtra("shut_time", data[7]);
+                            // power_time 设置开机时间
+                            intent.putExtra("power_time", powerS);
+                            WSApplication.app.sendBroadcast(intent);
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
