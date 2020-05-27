@@ -108,16 +108,20 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
             findViewById(R.id.ws_code_add).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Intent codeintent = new Intent(WSActivity.this, CodeListActivity.class);
-//                    startActivity(codeintent);
-                    PowerUtil.shutTime = "11:30";
-                    PowerUtil.checkAutoPower();
-                    Toast.makeText(mContext, "设置时间为" + PowerUtil.shutTime, Toast.LENGTH_SHORT).show();
+                    Intent codeintent = new Intent(WSActivity.this, CodeListActivity.class);
+                    startActivity(codeintent);
+//                    PowerUtil.shutTime = "11:30";
+//                    PowerUtil.checkAutoPower();
+//                    Toast.makeText(mContext, "设置时间为" + PowerUtil.shutTime, Toast.LENGTH_SHORT).show();
 //                    WebSocketService.getMyWebSocket().disconnect();
                 }
             });
         } catch (Exception e) {
 
+        }
+
+        if (!PowerUtil.isNetworkConnected(this)) {
+            Toast.makeText(mContext, "当前无网络可用！", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -212,6 +216,10 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     @Override
     public void onClick(View view) {
         if (isFastClick()) {
+            return;
+        }
+        if (!PowerUtil.isNetworkConnected(this)) {
+            Toast.makeText(this, "当前无网络可用！", Toast.LENGTH_SHORT).show();
             return;
         }
         if (R.id.main_button == view.getId()) {
