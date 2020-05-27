@@ -16,12 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.andea.microbook.R;
+import com.microbookcase.bean.TestBean;
 import com.microbookcase.service.WebSocketMessageBean;
 import com.microbookcase.service.WebSocketService;
 import com.microbookcase.service.WebSocketUtil;
 import com.microbookcase.utils.MyImageView;
+import com.microbookcase.utils.PowerUtil;
 import com.microbookcase.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -105,8 +108,11 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
             findViewById(R.id.ws_code_add).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent codeintent = new Intent(WSActivity.this, CodeListActivity.class);
-                    startActivity(codeintent);
+//                    Intent codeintent = new Intent(WSActivity.this, CodeListActivity.class);
+//                    startActivity(codeintent);
+                    PowerUtil.shutTime = "11:30";
+                    PowerUtil.checkAutoPower();
+                    Toast.makeText(mContext, "设置时间为" + PowerUtil.shutTime, Toast.LENGTH_SHORT).show();
 //                    WebSocketService.getMyWebSocket().disconnect();
                 }
             });
@@ -242,6 +248,11 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
             intent.putExtra("notBarcode", bean.getNotBarcode());
             startActivity(intent);
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetTestStr(TestBean testBean) {
+        mBackV.setText(testBean.getInfoStr());
     }
 
     private synchronized void showDialog(String url) {

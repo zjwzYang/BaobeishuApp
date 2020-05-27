@@ -3,6 +3,7 @@ package com.microbookcase.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,7 +42,9 @@ public class WebSocketService extends Service {
     public void onGetMessage(String message) {
         if ("reconnect".equals(message)) {
 //            Log.i("12345678", "onGetMessage: 重启");
-//            Toast.makeText(this, "是否连接：" + myWebSocket.isConnected(), Toast.LENGTH_SHORT).show();
+            if (WebSocketUtil.IS_TEST) {
+                Toast.makeText(this, "是否连接：" + myWebSocket.isConnected(), Toast.LENGTH_SHORT).show();
+            }
             if (myWebSocket.isConnected()) {
                 EventBus.getDefault().post("open_redy");
             } else {

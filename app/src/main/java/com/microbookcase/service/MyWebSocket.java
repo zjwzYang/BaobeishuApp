@@ -2,15 +2,16 @@ package com.microbookcase.service;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.andea.lockuntils.LockUtils;
 import com.microbookcase.ErrorCode;
 import com.microbookcase.WSApplication;
+import com.microbookcase.utils.PowerUtil;
 import com.rfid.api.ADReaderInterface;
 import com.rfid.api.GFunction;
 import com.rfid.api.ISO14443AInterface;
@@ -22,7 +23,6 @@ import com.rfid.def.RfidDef;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -207,9 +207,12 @@ public class MyWebSocket implements Runnable {
 
             @Override
             public void onTextMessage(String payLoad) {
-//                Toast.makeText(WSApplication.app, payLoad, Toast.LENGTH_SHORT).show();
+                if (WebSocketUtil.IS_TEST) {
+                    Toast.makeText(WSApplication.app, payLoad, Toast.LENGTH_SHORT).show();
+                }
                 Log.i(TAG, "onTextMessage: " + payLoad + "  " + Thread.currentThread().getName());
                 if (TextUtils.isEmpty(payLoad) || payLoad.equalsIgnoreCase("ping") || payLoad.equalsIgnoreCase("heartbeat")) {
+                    PowerUtil.checkAutoPower();
                     //心跳
                     return;
                 }
@@ -264,26 +267,10 @@ public class MyWebSocket implements Runnable {
                             setSterilampBegin(Integer.parseInt(data[4]));
                             setSterilampEnd(Integer.parseInt(data[5]));
 
-                            // 定制开机关机时间
-                            int shutOn = Integer.parseInt(data[6]);
-                            String ACTION_UBOX_SHUTDOWN = "com.ubox.auto_power_shut";
-                            Intent intent = new Intent(ACTION_UBOX_SHUTDOWN);
-                            if (shutOn == 1) {
-                                // effective 字段说明：true 为启动自动重启功能,false 为关闭功能
-                                intent.putExtra("effective", true);
-                            } else {
-                                intent.putExtra("effective", false);
-                            }
-                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                            Date shunDate = sdf.parse(data[7]);
-                            Date powerDate = new Date(shunDate.getTime() + 2 * 60 * 1000);
-                            String powerS = sdf.format(powerDate);
 
-                            // shut_time 设置关机时间
-                            intent.putExtra("shut_time", data[7]);
-                            // power_time 设置开机时间
-                            intent.putExtra("power_time", powerS);
-                            WSApplication.app.sendBroadcast(intent);
+                            // 定制开机关机时间
+                            PowerUtil.shutOn = Integer.parseInt(data[6]);
+                            PowerUtil.shutTime = data[7];
                         }
                     } catch (Exception ex) {
                         ex.printStackTrace();
