@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import com.andea.microbook.R;
 import com.microbookcase.bean.TestBean;
+import com.microbookcase.bean.WidthBean;
 import com.microbookcase.service.WebSocketMessageBean;
 import com.microbookcase.service.WebSocketService;
 import com.microbookcase.service.WebSocketUtil;
@@ -261,6 +264,24 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGetTestStr(TestBean testBean) {
         mBackV.setText(testBean.getInfoStr());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGetImgWidth(WidthBean widthBean) {
+        ad_image.post(new Runnable() {
+            @Override
+            public void run() {
+                int dw = ad_image.getDrawable().getBounds().width();
+                Matrix m = ad_image.getImageMatrix();
+                float[] values = new float[10];
+                m.getValues(values);
+                float sx = values[0];
+                int cw = (int) (dw * sx);
+                ViewGroup.LayoutParams layoutParams = main_button.getLayoutParams();
+                layoutParams.width = cw;
+                main_button.setLayoutParams(layoutParams);
+            }
+        });
     }
 
     private synchronized void showDialog(String url) {

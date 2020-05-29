@@ -39,6 +39,7 @@ public class MyImageView extends ImageView {
                 case GET_DATA_SUCCESS:
                     Bitmap bitmap = (Bitmap) msg.obj;
                     setImageBitmap(bitmap);
+//                    EventBus.getDefault().post(new WidthBean());
                     break;
                 case NETWORK_ERROR:
                     Toast.makeText(getContext(), "网络连接失败", Toast.LENGTH_SHORT).show();
