@@ -718,6 +718,7 @@ public class MyWebSocket implements Runnable {
                     webSocketConnection.sendTextMessage(bean.toString());
 
                     EventBus.getDefault().post("close_scan_view");
+                    EventBus.getDefault().post("start_play_mp3");
 //                    EventBus.getDefault().post(bean);
 
                     Log.i(TAG, "web状态" + webSocketConnection.isConnected());

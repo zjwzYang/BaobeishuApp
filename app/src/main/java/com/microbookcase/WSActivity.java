@@ -6,8 +6,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -34,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,6 +59,9 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
 
     private LinearLayout mTestLinear;
     private Intent intentService;
+
+    private AssetManager assetManager;
+    private MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +132,56 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
 
         if (!PowerUtil.isNetworkConnected(this)) {
             Toast.makeText(mContext, "当前无网络可用！", Toast.LENGTH_SHORT).show();
+        }
+
+        assetManager = getResources().getAssets();
+        player = new MediaPlayer();
+        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                if (WebSocketUtil.IS_TEST) {
+                    Toast.makeText(mContext, "正在准备", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                if (WebSocketUtil.IS_TEST) {
+                    Toast.makeText(mContext, "播放完成", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        player.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                if (WebSocketUtil.IS_TEST) {
+                    Toast.makeText(mContext, "出错了i：" + i + "  i1:" + i1, Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+        });
+        findViewById(R.id.ws_code_play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playMp3("20200605_073309.m4a");
+            }
+        });
+    }
+
+    private void playMp3(String mp3Name) {
+        try {
+            if (player.isPlaying()) {
+                return;
+            }
+            AssetFileDescriptor fileDescriptor = assetManager.openFd(mp3Name);
+            player.reset();
+            player.setDataSource(fileDescriptor.getFileDescriptor(), fileDescriptor.getStartOffset(), fileDescriptor.getLength());
+            player.prepare();
+            player.start();
+        } catch (IOException e) {
+            Toast.makeText(mContext, "出错了：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 
@@ -227,6 +284,7 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
         }
         if (R.id.main_button == view.getId()) {
             EventBus.getDefault().post("reconnect");
+            playMp3("20200605_073309.m4a");
         }
     }
 
@@ -246,6 +304,9 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
         } else if ("jump_code".equals(message)) {
             Intent intent = new Intent(this, CodeListActivity.class);
             startActivity(intent);
+            playMp3("20200605_073507.m4a");
+        } else if ("start_play_mp3".equals(message)) {
+            playMp3("20200605_073606.m4a");
         }
     }
 
