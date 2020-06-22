@@ -41,11 +41,11 @@ public class PowerUtil {
                 if (currDate.getTime() > shunDate.getTime()) { // 当前时间大于重启时间是不设置
                     hasSetShut = false;
                     return;
-                } else if (shunDate.getTime() - currDate.getTime() < 1 * 60 * 1000 && !hasSetShut) { // 重启时间在当前时间2分钟前设置重启
+                } else if (shunDate.getTime() - currDate.getTime() < 2 * 60 * 1000 && !hasSetShut) { // 重启时间在当前时间2分钟前设置重启
                     hasSetShut = true;
 
                     // 开机时间
-                    Date powerDate = new Date(shunDate.getTime() + 2 * 60 * 1000);
+                    Date powerDate = new Date(shunDate.getTime() + 1 * 60 * 1000);
                     String powerTime = sdf.format(powerDate);
 
                     String ACTION_UBOX_SHUTDOWN = "com.ubox.auto_power_shut";

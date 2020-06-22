@@ -212,7 +212,7 @@ public class MyWebSocket implements Runnable {
                 }
                 Log.i(TAG, "onTextMessage: " + payLoad + "  " + Thread.currentThread().getName());
                 if (TextUtils.isEmpty(payLoad) || payLoad.equalsIgnoreCase("ping") || payLoad.equalsIgnoreCase("heartbeat")) {
-                    // PowerUtil.checkAutoPower();
+                    PowerUtil.checkAutoPower();
                     //心跳
                     return;
                 }

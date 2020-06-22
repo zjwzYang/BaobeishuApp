@@ -7,14 +7,14 @@ public class WebSocketUtil {
     public static final String DEVICE_NAME = "device2";
     private static final String URL = "/device/" + DEVICE_NAME;
     public static final String ROOT_URL = WS + IP + PORT + URL;
-    // 书本信息接口 http://www.qukandian573.com/admin/
+    // 书本信息接口 http://admin.qukandian573.com/
     public static final String get_code_book = "http://admin.fayshine.cn/out/findProductByBarcode?devicename=" + DEVICE_NAME + "&barcode=";
 
 
     // 测试的接口  2a943044t6.zicp.vip
-    public static final String TEST_IP = "2a943044t6.zicp.vip";
-    public static final String get_code_book_test = "http://192.168.124.56:8080/out/findProductByBarcode?devicename=" + DEVICE_NAME + "&barcode=";
+    public static final String TEST_IP = "www.qukandian573.com";
+    public static final String get_code_book_test = "http://admin.qukandian573.com/out/findProductByBarcode?devicename=" + DEVICE_NAME + "&barcode=";
     public static final String ROOT_URL_TEST = WS + TEST_IP + PORT + URL;
 
-    public static boolean IS_TEST = true;
+    public static boolean IS_TEST = false;
 }

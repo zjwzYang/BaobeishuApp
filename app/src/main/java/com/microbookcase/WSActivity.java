@@ -136,31 +136,31 @@ public class WSActivity extends Activity implements android.view.View.OnTouchLis
 
         assetManager = getResources().getAssets();
         player = new MediaPlayer();
-        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                if (WebSocketUtil.IS_TEST) {
-                    Toast.makeText(mContext, "正在准备", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                if (WebSocketUtil.IS_TEST) {
-                    Toast.makeText(mContext, "播放完成", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        player.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                if (WebSocketUtil.IS_TEST) {
-                    Toast.makeText(mContext, "出错了i：" + i + "  i1:" + i1, Toast.LENGTH_SHORT).show();
-                }
-                return false;
-            }
-        });
+//        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mediaPlayer) {
+//                if (WebSocketUtil.IS_TEST) {
+//                    Toast.makeText(mContext, "正在准备", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mediaPlayer) {
+//                if (WebSocketUtil.IS_TEST) {
+//                    Toast.makeText(mContext, "播放完成", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//        player.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+//            @Override
+//            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+//                if (WebSocketUtil.IS_TEST) {
+//                    Toast.makeText(mContext, "出错了i：" + i + "  i1:" + i1, Toast.LENGTH_SHORT).show();
+//                }
+//                return false;
+//            }
+//        });
         findViewById(R.id.ws_code_play).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
